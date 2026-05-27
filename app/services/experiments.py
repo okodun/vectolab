@@ -1,7 +1,8 @@
-﻿import hashlib
+import hashlib
+
+from sqlalchemy.orm import Session
 
 from app.repositories import experiments as experiment_repository
-from sqlalchemy.orm import Session
 
 
 def get_bucket(user_id: int, experiment: str) -> int:

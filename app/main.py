@@ -1,13 +1,15 @@
-﻿from contextlib import asynccontextmanager
-from app.routes import experiments, test_items
+from contextlib import asynccontextmanager
+
+from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from starlette.middleware.trustedhost import TrustedHostMiddleware
+
 from app.core.config import settings
 from app.core.logging import configure_logging
 from app.core.middleware import security_headers
 from app.db import database
-from fastapi import FastAPI, Request
-from fastapi.responses import JSONResponse
-from fastapi.middleware.cors import CORSMiddleware
-from starlette.middleware.trustedhost import TrustedHostMiddleware
+from app.routes import events, experiments, test_items
 
 logger = configure_logging()
 
@@ -39,6 +41,7 @@ app.middleware("http")(security_headers)
 
 app.include_router(experiments.router)
 app.include_router(test_items.router)
+app.include_router(events.router)
 
 
 @app.exception_handler(Exception)

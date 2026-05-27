@@ -1,10 +1,11 @@
-﻿from app.db.database import get_db
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
+
+from app.core.authorization import authorize_roblox
+from app.db.database import get_db
 from app.repositories import experiments as experiment_repository
 from app.schemas.experiment import Experiment, GroupAssignment, GroupAssignmentRequest
 from app.services import experiments as experiment_service
-from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
-from app.core.authorization import authorize_roblox
 
 router = APIRouter(prefix="/experiment", tags=["experiments"])
 
@@ -13,7 +14,7 @@ router = APIRouter(prefix="/experiment", tags=["experiments"])
 async def get_group_assignment(
         payload: GroupAssignmentRequest,
         db: Session = Depends(get_db),
-        _: None = Depends(authorize_roblox),
+        _: None = Depends(authorize_roblox)
 ):
     group = experiment_service.resolve_group(
         db=db,

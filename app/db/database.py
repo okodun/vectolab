@@ -1,8 +1,9 @@
 from pathlib import Path
 
-from app.core.config import settings
 from sqlalchemy import create_engine
 from sqlalchemy.orm import declarative_base, sessionmaker
+
+from app.core.config import settings
 
 
 def _ensure_sqlite_parent_dir(database_url: str) -> None:

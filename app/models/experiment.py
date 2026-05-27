@@ -1,6 +1,7 @@
-﻿from app.db.database import Base
 from sqlalchemy import Boolean, Float, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column
+
+from app.db.database import Base
 
 
 class Experiment(Base):

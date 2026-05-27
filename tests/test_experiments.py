@@ -1,4 +1,4 @@
-﻿from app.services.experiments import get_bucket
+from app.services.experiments import get_bucket
 
 
 def test_bucket_assignment_is_deterministic():
