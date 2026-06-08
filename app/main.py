@@ -1,6 +1,6 @@
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, status, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from starlette.middleware.trustedhost import TrustedHostMiddleware
@@ -15,7 +15,7 @@ logger = configure_logging()
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(_: FastAPI):
     database.create_db()
     logger.info("Database initialized.")
     yield
@@ -45,7 +45,7 @@ app.include_router(events.router)
 
 
 @app.exception_handler(Exception)
-async def global_exception_handler(request: Request, exc: Exception):
+async def global_exception_handler(request: Request, _: Exception):
     logger.exception(
         "Unhandled exception while processing request",
         extra={
@@ -64,4 +64,9 @@ async def global_exception_handler(request: Request, exc: Exception):
 
 @app.get("/")
 async def index():
-    return {"details": "i'm up and running"}
+    return {"details": "up and running"}
+
+
+@app.get("/favicon.ico", include_in_schema=False)
+async def favicon():
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
